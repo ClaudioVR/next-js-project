@@ -29,7 +29,7 @@ export default function Home() {
     const fetchData = () => {
       setLoading(true);
       axios(
-        `https://randomuser.me/api?seed=8a13afcabe1a8004&page=${page}&results=10`,
+        `https://randomuser.me/api?seed=8a13afcabe1a8004&page=${page}&results=12`,
         {
           headers: {
             Accept: "application/json",
@@ -66,18 +66,16 @@ export default function Home() {
         <Grid item xs={12} sm={8} md={9}>
           <Item>
             <h1>My users</h1>
-            <Box
-              sx={{
-                display: "flex",
-                flexWrap: "wrap",
-                justifyContent: "space-between",
-              }}
-            >
+            <Grid container spacing={{ xs: 2, md: 3 }}>
               {users.map((user, i) => (
-                <UserCard sx={{ flexGrow: 1 }} user={user} key={i} />
+                <Grid item xs={12} md={6} lg={4} xl={3} key={i}>
+                  <Item>
+                    <UserCard sx={{ flexGrow: 1 }} user={user} />
+                  </Item>
+                </Grid>
               ))}
-            </Box>
-            <div>
+            </Grid>
+            <div className="buttons">
               <p>Page {page} </p>
               <Button
                 sx={{ mr: 2 }}

@@ -5,23 +5,42 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import Avatar from "@mui/material/Avatar";
+import StarBorderIcon from "@mui/icons-material/StarBorder";
+import StarIcon from "@mui/icons-material/Star";
 
 const UserCard = ({ user }) => {
   return (
-    <Card>
+    <Card variant="outlined" sx={{ border: "none" }}>
+      <CardActions sx={{ display: "flex", justifyContent: "flex-end" }}>
+        <Button size="small">
+          <StarBorderIcon />
+          <StarIcon />
+        </Button>
+      </CardActions>
       <CardContent>
-        <Typography sx={{ fontSize: 18 }} color="text.secondary" gutterBottom>
-          {user.name.first} {user.name.last} ({user.dob.age})
+        <Avatar
+          alt="Remy Sharp"
+          src={user.picture.large}
+          sx={{ width: 100, height: 100, mx: "auto", mb: 3 }}
+        />
+        <Typography sx={{ fontSize: 16, my: 0 }} gutterBottom>
+          {user.name.first} {user.name.last}
         </Typography>
-
-        <Typography sx={{ mb: 1.5 }} color="text.secondary">
+        <Typography sx={{ fontSize: 16, mb: 2 }} gutterBottom>
+          ({user.dob.age})
+        </Typography>
+        <Typography
+          sx={{ fontSize: 12, fontWeight: "light" }}
+          color="text.secondary"
+        >
           {user.location.city}, {user.location.country}
         </Typography>
-        <Typography variant="body2">{user.email}</Typography>
+
+        <Typography sx={{ fontSize: 12, fontWeight: "light" }}>
+          {user.email}
+        </Typography>
       </CardContent>
-      <CardActions>
-        <Button size="small">Like</Button>
-      </CardActions>
     </Card>
   );
 };
