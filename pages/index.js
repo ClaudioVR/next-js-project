@@ -16,20 +16,20 @@ export default function Home() {
     color: theme.palette.text.secondary,
   }));
 
-  const [users, setUsers] = useState(null);
+  const [data, setData] = useState(null);
   const [isLoading, setLoading] = useState(false);
+  // page sets the apiURL paggination
   const [page, setPage] = useState(1);
 
-  // 'https://randomuser.me/api?seed=00000&page=1&results=10'
-
-  // const apiUrl = `https://randomuser.me/api?seed=8a13afcabe1a8004&page=${page}&results=10`;
-  // const apiUrl = "https://randomuser.me/api/?results=10";
+  // const sortedAlphabetically = res.data.results.sort(
+  //   (a, b) => a.name.first.toLowerCase() - b.name.first.toLowerCase()
+  // );
 
   useEffect(() => {
     const fetchData = () => {
       setLoading(true);
       axios(
-        `https://randomuser.me/api?seed=8a13afcabe1a8004&page=${page}&results=12`,
+        `https://randomuser.me/api?seed=8a13afcabe1a8004&page=${page}&results=10`,
         {
           headers: {
             Accept: "application/json",
@@ -37,11 +37,8 @@ export default function Home() {
           },
         }
       ).then((res) => {
-        const sortedAlphabetically = res.data.results.sort(
-          (a, b) => a.name.first.toLowerCase() - b.name.first.toLowerCase()
-        );
-        setUsers(sortedAlphabetically);
-        console.log(users);
+        console.log(res.data);
+        setData(res.data);
         setLoading(false);
       });
     };
@@ -58,19 +55,19 @@ export default function Home() {
   }
 
   if (isLoading) return <p>Loading...</p>;
-  if (!users) return <p>No profile data</p>;
+  if (!data) return <p>No profile data</p>;
 
   return (
     <Box sx={{ mt: 3 }}>
-      <Grid container spacing={{ xs: 2, md: 3 }}>
+      <Grid container spacing={{ xs: 2 }}>
         <Grid item xs={12} sm={8} md={9}>
           <Item>
-            <h1>My users</h1>
-            <Grid container spacing={{ xs: 2, md: 3 }}>
-              {users.map((user, i) => (
-                <Grid item xs={12} md={6} lg={4} xl={3} key={i}>
+            <h2>My users</h2>
+            <Grid container spacing={{ xs: 2 }}>
+              {data.results.map((user, i) => (
+                <Grid item xs={12} md={6} lg={4} key={i}>
                   <Item>
-                    <UserCard sx={{ flexGrow: 1 }} user={user} />
+                    <UserCard sx={{ flexGrow: 1 }} user={user} page={page} />
                   </Item>
                 </Grid>
               ))}
@@ -92,7 +89,9 @@ export default function Home() {
           </Item>
         </Grid>
         <Grid item xs={12} sm={4} md={3}>
-          <Item>xs=2</Item>
+          <Item>
+            <h2>Favourites</h2>
+          </Item>
         </Grid>
       </Grid>
     </Box>

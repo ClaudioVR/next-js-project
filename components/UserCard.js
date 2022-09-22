@@ -1,5 +1,4 @@
 import React from "react";
-import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -8,19 +7,34 @@ import Typography from "@mui/material/Typography";
 import Avatar from "@mui/material/Avatar";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import StarIcon from "@mui/icons-material/Star";
+import { useRouter } from "next/router";
 
-const UserCard = ({ user }) => {
+const UserCard = ({ user, page }) => {
+  const router = useRouter();
+
+  function handleClick(e) {
+    e.preventDefault();
+    if (user.id.value) router.push(`/user/${user.id.value}?page=${page}`);
+    else
+      alert(
+        "No valid ID found for this user. Unable to correctly fetch more details."
+      );
+  }
+
   return (
     <Card variant="outlined" sx={{ border: "none" }}>
-      <CardActions sx={{ display: "flex", justifyContent: "flex-end" }}>
+      <CardActions sx={{ display: "flex", justifyContent: "space-Between" }}>
         <Button size="small">
           <StarBorderIcon />
           <StarIcon />
         </Button>
+        <Button onClick={handleClick} size="small">
+          View info
+        </Button>
       </CardActions>
       <CardContent>
         <Avatar
-          alt="Remy Sharp"
+          alt="User image"
           src={user.picture.large}
           sx={{ width: 100, height: 100, mx: "auto", mb: 3 }}
         />
