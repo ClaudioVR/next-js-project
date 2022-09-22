@@ -6,17 +6,9 @@ import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import UserCard from "../components/UserCard";
-import { FavouriteCard } from "../components/FavouriteCard";
+import FavouriteCard from "../components/FavouriteCard";
 
 export default function Home() {
-  const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-    ...theme.typography.body2,
-    padding: theme.spacing(2),
-    textAlign: "center",
-    color: theme.palette.text.secondary,
-  }));
-
   const [data, setData] = useState(null);
   const [isLoading, setLoading] = useState(false);
   // page sets the apiURL paggination
@@ -43,17 +35,17 @@ export default function Home() {
     fetchData();
   }, [page]);
 
-  // useEffect(() => {
-  //   const savedFavs = localStorage.getItem("favourites");
-  //   if (favourites) {
-  //     localStorage.setItem("favourites", JSON.stringify(favourites));
-  //   } else {
-  //     if (savedFavs) {
-  //       const parseFavourites = JSON.parse(savedFavs);
-  //       setFavourites(parseFavourites);
-  //     }
-  //   }
-  // }, [favourites]);
+  useEffect(() => {
+    const savedFavs = localStorage.getItem("favourites");
+    if (favourites.length) {
+      localStorage.setItem("favourites", JSON.stringify(favourites));
+    } else {
+      if (savedFavs) {
+        const parseFavourites = JSON.parse(savedFavs);
+        setFavourites(parseFavourites);
+      }
+    }
+  }, [favourites]);
 
   function handleNextClick() {
     setPage(page + 1);
@@ -99,52 +91,46 @@ export default function Home() {
     <Box sx={{ mt: 3 }}>
       <Grid container spacing={{ xs: 2 }}>
         <Grid item xs={12} sm={8} md={9}>
-          <Item>
-            <h2>My users</h2>
-            <Grid container spacing={{ xs: 2 }}>
-              {data.results.map((user, i) => (
-                <Grid item xs={12} md={6} lg={4} key={i}>
-                  <Item>
-                    <UserCard
-                      updateFavourites={updateFavourites}
-                      sx={{ flexGrow: 1 }}
-                      user={user}
-                      page={page}
-                    />
-                  </Item>
-                </Grid>
-              ))}
-            </Grid>
-            <div className="buttons">
-              <p>Page {page} </p>
-              <Button
-                sx={{ mr: 2 }}
-                variant="outlined"
-                onClick={() => handlePreviousClick()}
-                disabled={page === 1}
-              >
-                Previous
-              </Button>
-              <Button variant="outlined" onClick={() => handleNextClick()}>
-                Next
-              </Button>
-            </div>
-          </Item>
+          <h2>My users</h2>
+          <Grid container spacing={{ xs: 2 }}>
+            {data.results.map((user, i) => (
+              <Grid item xs={12} md={6} lg={4} key={i}>
+                <UserCard
+                  updateFavourites={updateFavourites}
+                  sx={{ flexGrow: 1 }}
+                  user={user}
+                  page={page}
+                />
+              </Grid>
+            ))}
+          </Grid>
+          <div className="buttons">
+            <p>Page {page} </p>
+            <Button
+              sx={{ mr: 2 }}
+              variant="outlined"
+              onClick={() => handlePreviousClick()}
+              disabled={page === 1}
+            >
+              Previous
+            </Button>
+            <Button variant="outlined" onClick={() => handleNextClick()}>
+              Next
+            </Button>
+          </div>
         </Grid>
         <Grid item xs={12} sm={4} md={3}>
-          <Item>
-            <h2>Favourites {favourites ? favourites.length : null}</h2>
-            {favourites.map((element, index) => {
-              return (
-                <div key={index}>
-                  <h2>{element.name.first}</h2>
-                </div>
-              );
-            })}
-            {/* {favourites.map((user, i) => (
-              <FavouriteCard user={user} key={i} />
-            ))} */}
-          </Item>
+          <h2>Favourites</h2>
+
+          {favourites.map((user, i) => (
+            <FavouriteCard
+              key={i}
+              updateFavourites={updateFavourites}
+              sx={{ flexGrow: 1 }}
+              user={user}
+              page={page}
+            />
+          ))}
         </Grid>
       </Grid>
     </Box>

@@ -26,7 +26,7 @@ const UserCard = ({ user, page, updateFavourites }) => {
   }
 
   return (
-    <Card variant="outlined" sx={{ border: "none" }}>
+    <Card sx={{ border: "none" }}>
       <CardActions sx={{ display: "flex", justifyContent: "space-Between" }}>
         <Button onClick={() => toggleFavourtie()} size="small">
           <StarBorderIcon />
