@@ -100,6 +100,7 @@ export default function Home() {
                   sx={{ flexGrow: 1 }}
                   user={user}
                   page={page}
+                  favourites={favourites}
                 />
               </Grid>
             ))}

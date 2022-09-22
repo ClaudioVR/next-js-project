@@ -9,7 +9,7 @@ import StarBorderIcon from "@mui/icons-material/StarBorder";
 import StarIcon from "@mui/icons-material/Star";
 import { useRouter } from "next/router";
 
-const UserCard = ({ user, page, updateFavourites }) => {
+const UserCard = ({ user, page, favourites, updateFavourites }) => {
   const router = useRouter();
 
   function handleClick() {
@@ -25,18 +25,19 @@ const UserCard = ({ user, page, updateFavourites }) => {
     else alert("User does not have a valid ID. Cannot add to favourites.");
   }
 
+  const userIsFav = favourites.some((fav) => fav.id.value === user.id.value);
+
   return (
     <Card sx={{ border: "none" }}>
       <CardActions sx={{ display: "flex", justifyContent: "space-Between" }}>
         <Button onClick={() => toggleFavourtie()} size="small">
-          <StarBorderIcon />
-          <StarIcon />
+          {userIsFav ? <StarIcon /> : <StarBorderIcon />}
         </Button>
         <Button onClick={() => handleClick()} size="small">
-          View info
+          Vis mer
         </Button>
       </CardActions>
-      <CardContent>
+      <CardContent sx={{ textAlign: "center" }}>
         <Avatar
           alt="User image"
           src={user.picture.large}

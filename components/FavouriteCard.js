@@ -1,28 +1,25 @@
 import React from "react";
 import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Avatar from "@mui/material/Avatar";
 import { Box } from "@mui/material";
-import StarIcon from "@mui/icons-material/Star";
+import { useRouter } from "next/router";
+import styles from "../styles/Styles.module.css";
 
-const FavouriteCard = ({ user }) => {
+const FavouriteCard = ({ user, page }) => {
+  const router = useRouter();
+
   function handleClick() {
     router.push(`/user/${user.id.value}?page=${page}`);
   }
 
   return (
-    <Card sx={{ border: "none", p: 0, mb: 2, height: 80 }}>
-      {/* <CardActions sx={{ display: "flex", justifyContent: "space-Between" }}>
-        <Button onClick={() => toggleFavourtie()} size="small">
-          <StarIcon />
-        </Button>
-        <Button onClick={() => handleClick()} size="small">
-          View info
-        </Button>
-      </CardActions> */}
+    <Card
+      className={styles.pointer}
+      onClick={() => handleClick()}
+      sx={{ border: "none", p: 0, mb: 2, height: 80 }}
+    >
       <CardContent sx={{}}>
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
           <Avatar
