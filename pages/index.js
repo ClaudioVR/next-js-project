@@ -6,6 +6,7 @@ import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import UserCard from "../components/UserCard";
+import { FavouriteCard } from "../components/FavouriteCard";
 
 export default function Home() {
   const Item = styled(Paper)(({ theme }) => ({
@@ -20,10 +21,7 @@ export default function Home() {
   const [isLoading, setLoading] = useState(false);
   // page sets the apiURL paggination
   const [page, setPage] = useState(1);
-
-  // const sortedAlphabetically = res.data.results.sort(
-  //   (a, b) => a.name.first.toLowerCase() - b.name.first.toLowerCase()
-  // );
+  const [favourites, setFavourites] = useState([]);
 
   useEffect(() => {
     const fetchData = () => {
@@ -37,7 +35,6 @@ export default function Home() {
           },
         }
       ).then((res) => {
-        console.log(res.data);
         setData(res.data);
         setLoading(false);
       });
@@ -46,12 +43,53 @@ export default function Home() {
     fetchData();
   }, [page]);
 
+  // useEffect(() => {
+  //   const savedFavs = localStorage.getItem("favourites");
+  //   if (favourites) {
+  //     localStorage.setItem("favourites", JSON.stringify(favourites));
+  //   } else {
+  //     if (savedFavs) {
+  //       const parseFavourites = JSON.parse(savedFavs);
+  //       setFavourites(parseFavourites);
+  //     }
+  //   }
+  // }, [favourites]);
+
   function handleNextClick() {
     setPage(page + 1);
   }
 
   function handlePreviousClick() {
     setPage(page - 1);
+  }
+
+  function updateFavourites(user) {
+    console.log(user.id.value);
+    // if favourtes exist check for user => if user is fav remove || add
+    if (favourites.length) {
+      console.log("A");
+      const favsIncludeUser = favourites.some(
+        (fav) => fav.id.value === user.id.value
+      );
+      if (favsIncludeUser) {
+        console.log("B");
+        console.log(favsIncludeUser);
+        // remove user from favs
+        const newFavs = favourites.filter(
+          (fav) => fav.id.value !== user.id.value
+        );
+        setFavourites(newFavs);
+      } else {
+        console.log("C");
+        // add user
+        setFavourites((current) => [user, ...current]);
+      }
+    } else {
+      // if no favourites exist => add user
+      console.log("D");
+      setFavourites((current) => [user, ...current]);
+      console.log(favourites);
+    }
   }
 
   if (isLoading) return <p>Loading...</p>;
@@ -67,7 +105,12 @@ export default function Home() {
               {data.results.map((user, i) => (
                 <Grid item xs={12} md={6} lg={4} key={i}>
                   <Item>
-                    <UserCard sx={{ flexGrow: 1 }} user={user} page={page} />
+                    <UserCard
+                      updateFavourites={updateFavourites}
+                      sx={{ flexGrow: 1 }}
+                      user={user}
+                      page={page}
+                    />
                   </Item>
                 </Grid>
               ))}
@@ -90,7 +133,17 @@ export default function Home() {
         </Grid>
         <Grid item xs={12} sm={4} md={3}>
           <Item>
-            <h2>Favourites</h2>
+            <h2>Favourites {favourites ? favourites.length : null}</h2>
+            {favourites.map((element, index) => {
+              return (
+                <div key={index}>
+                  <h2>{element.name.first}</h2>
+                </div>
+              );
+            })}
+            {/* {favourites.map((user, i) => (
+              <FavouriteCard user={user} key={i} />
+            ))} */}
           </Item>
         </Grid>
       </Grid>
