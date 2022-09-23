@@ -4,14 +4,21 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
-export default function SelectSmall({ sortByName, sortByAge }) {
+export default function SelectSmall({
+  resetSortBy,
+  sortByName,
+  sortByAge,
+  sortByFavourite,
+}) {
   const [sortBy, setSortBy] = React.useState("");
 
   const handleChange = (event) => {
     let sortBy = event.target.value;
     setSortBy(sortBy);
+    if (sortBy === "") resetSortBy();
     if (sortBy === "name") sortByName();
     if (sortBy === "age") sortByAge();
+    if (sortBy === "favourite") sortByFavourite();
   };
 
   return (

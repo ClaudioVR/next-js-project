@@ -10,6 +10,7 @@ import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import SortBySelect from "../components/SortBySelect";
 import LinearProgress from "@mui/material/LinearProgress";
 import PreviousNextButtons from "../components/PreviousNextButtons";
+import { SettingsInputAntennaTwoTone } from "@mui/icons-material";
 
 export default function Home() {
   const [data, setData] = useState(null);
@@ -17,6 +18,8 @@ export default function Home() {
   // page sets the apiURL paggination
   const [page, setPage] = useState(1);
   const [favourites, setFavourites] = useState([]);
+  // setValue for refreshing purposes
+  const [value, setValue] = useState();
 
   useEffect(() => {
     const fetchData = () => {
@@ -36,7 +39,7 @@ export default function Home() {
     };
 
     fetchData();
-  }, [page]);
+  }, [page, value]);
 
   useEffect(() => {
     const savedFavs = localStorage.getItem("favourites");
@@ -81,23 +84,41 @@ export default function Home() {
     }
   }
 
+  function resetSortBy() {
+    // window.location.reload();
+    setValue({});
+  }
+
   function sortByName() {
     const shallowCopy = [...data.results];
-    const usersByName = shallowCopy.sort((a, b) =>
+    const sortedUsers = shallowCopy.sort((a, b) =>
       a.name.first.toLowerCase() < b.name.first.toLowerCase() ? -1 : 1
     );
     setData({
-      results: usersByName,
+      results: sortedUsers,
     });
   }
 
   function sortByAge() {
     const shallowCopy = [...data.results];
-    const usersByAge = shallowCopy.sort((a, b) =>
+    const sortedUsers = shallowCopy.sort((a, b) =>
       a.dob.age < b.dob.age ? -1 : 1
     );
     setData({
-      results: usersByAge,
+      results: sortedUsers,
+    });
+  }
+
+  function sortByFavourite() {
+    const savedFavs = localStorage.getItem("favourites");
+    const shallowCopy = [...data.results];
+    const sortedUsers = shallowCopy.sort(
+      (a, b) =>
+        Number(savedFavs.some((fav) => fav.id.value === a.id.value)) -
+        Number(savedFavs.some((fav) => fav.id.value === b.id.value))
+    );
+    setData({
+      results: sortedUsers,
     });
   }
 
@@ -123,6 +144,7 @@ export default function Home() {
           >
             <h2>Mine brukere</h2>
             <SortBySelect
+              resetSortBy={resetSortBy}
               sortByName={sortByName}
               sortByAge={sortByAge}
               sortByFavourite={sortByFavourite}
