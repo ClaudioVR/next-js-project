@@ -18,20 +18,20 @@ const Nav = () => {
               </Typography>
             </Link>
           </li>
-          <li className={navStyles.pointer}>
+          {/* <li className={navStyles.pointer}>
             <Link href="/">
               <Typography sx={{ fontSize: 18, my: 0 }} gutterBottom>
                 Hjem
               </Typography>
             </Link>
-          </li>
-          <li className={navStyles.pointer}>
+          </li> */}
+          {/* <li className={navStyles.pointer}>
             <Link href="/">
               <Typography sx={{ fontSize: 18, my: 0 }} gutterBottom>
                 Favoriter
               </Typography>
             </Link>
-          </li>
+          </li> */}
         </ul>
       </Container>
     </nav>

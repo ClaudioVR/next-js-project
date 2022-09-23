@@ -1,4 +1,5 @@
 import React from "react";
+import { useEffect, useState } from "react";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -12,6 +13,8 @@ import Box from "@mui/material/Box";
 import SendIcon from "@mui/icons-material/Send";
 
 const UserFullDetails = ({ user }) => {
+  const [favourites, setFavourites] = useState([]);
+
   const userDOB = () => {
     const event = new Date(`${user.dob.date}`);
     return event.toLocaleDateString("no-No");
@@ -22,12 +25,49 @@ const UserFullDetails = ({ user }) => {
     return event.toLocaleDateString("no-No");
   };
 
+  const userIsFav = favourites.some((fav) => fav.id.value === user.id.value);
+
+  useEffect(() => {
+    const savedFavs = localStorage.getItem("favourites");
+    if (favourites.length) {
+      localStorage.setItem("favourites", JSON.stringify(favourites));
+    } else {
+      if (savedFavs) {
+        const parseFavourites = JSON.parse(savedFavs);
+        setFavourites(parseFavourites);
+      }
+    }
+  }, [favourites]);
+
+  function updateFavourites() {
+    // if favourtes exist check for user => if user is fav remove || add
+    if (favourites.length) {
+      const favsIncludeUser = favourites.some(
+        (fav) => fav.id.value === user.id.value
+      );
+      if (favsIncludeUser) {
+        console.log(favsIncludeUser);
+        // remove user from favs
+        const newFavs = favourites.filter(
+          (fav) => fav.id.value !== user.id.value
+        );
+        setFavourites(newFavs);
+      } else {
+        // add user
+        setFavourites((current) => [user, ...current]);
+      }
+    } else {
+      // if no favourites exist => add user
+      setFavourites((current) => [user, ...current]);
+      console.log(favourites);
+    }
+  }
+
   return (
     <Card sx={{ border: "none", mt: 5 }}>
       <CardActions sx={{ display: "flex", justifyContent: "flex-end" }}>
-        <Button size="small">
-          <StarBorderIcon />
-          <StarIcon />
+        <Button onClick={updateFavourites} size="small">
+          {userIsFav ? <StarIcon /> : <StarBorderIcon />}
         </Button>
       </CardActions>
       <CardContent>

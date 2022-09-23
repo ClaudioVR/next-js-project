@@ -56,31 +56,25 @@ export default function Home() {
   }
 
   function updateFavourites(user) {
-    console.log(user.id.value);
     // if favourtes exist check for user => if user is fav remove || add
     if (favourites.length) {
-      console.log("A");
       const favsIncludeUser = favourites.some(
         (fav) => fav.id.value === user.id.value
       );
       if (favsIncludeUser) {
-        console.log("B");
-        console.log(favsIncludeUser);
         // remove user from favs
         const newFavs = favourites.filter(
           (fav) => fav.id.value !== user.id.value
         );
+        localStorage.clear();
         setFavourites(newFavs);
       } else {
-        console.log("C");
         // add user
         setFavourites((current) => [user, ...current]);
       }
     } else {
       // if no favourites exist => add user
-      console.log("D");
       setFavourites((current) => [user, ...current]);
-      console.log(favourites);
     }
   }
 
@@ -94,7 +88,7 @@ export default function Home() {
           <h2>My users</h2>
           <Grid container spacing={{ xs: 2 }}>
             {data.results.map((user, i) => (
-              <Grid item xs={12} md={6} lg={4} key={i}>
+              <Grid item xs={12} md={6} key={i}>
                 <UserCard
                   updateFavourites={updateFavourites}
                   sx={{ flexGrow: 1 }}
@@ -105,20 +99,35 @@ export default function Home() {
               </Grid>
             ))}
           </Grid>
-          <div className="buttons">
-            <p>Page {page} </p>
+          <Box
+            sx={{
+              mt: 3,
+              width: "100%",
+              height: "60px",
+              padding: "10px",
+              background: "white",
+              borderRadius: "5px",
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            {/* <p>Page {page} </p> */}
             <Button
-              sx={{ mr: 2 }}
+              sx={{ mr: 2, width: "100px" }}
               variant="outlined"
               onClick={() => handlePreviousClick()}
               disabled={page === 1}
             >
               Previous
             </Button>
-            <Button variant="outlined" onClick={() => handleNextClick()}>
+            <Button
+              sx={{ width: "100px" }}
+              variant="outlined"
+              onClick={() => handleNextClick()}
+            >
               Next
             </Button>
-          </div>
+          </Box>
         </Grid>
         <Grid item xs={12} sm={4} md={3}>
           <h2>Favourites</h2>

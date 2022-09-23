@@ -3,6 +3,8 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import UserFullDetails from "../../components/UserFullDetails";
+import Button from "@mui/material/Button";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 export default function User() {
   const router = useRouter();
@@ -35,5 +37,17 @@ export default function User() {
     }
   }, [id]);
 
-  return <div>{user && <UserFullDetails user={user} />}</div>;
+  return (
+    <div>
+      <Button
+        href="/"
+        sx={{ mt: 3 }}
+        variant="outlined"
+        startIcon={<ArrowBackIcon />}
+      >
+        Tilbake
+      </Button>
+      {user && <UserFullDetails user={user} />}
+    </div>
+  );
 }
