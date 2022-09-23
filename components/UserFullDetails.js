@@ -1,5 +1,7 @@
 import React from "react";
 import { useEffect, useState } from "react";
+import axios from "axios";
+
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -11,6 +13,7 @@ import StarIcon from "@mui/icons-material/Star";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import SendIcon from "@mui/icons-material/Send";
+import DownloadIcon from "@mui/icons-material/Download";
 
 const UserFullDetails = ({ user }) => {
   const [favourites, setFavourites] = useState([]);
@@ -63,6 +66,40 @@ const UserFullDetails = ({ user }) => {
     }
   }
 
+  function downloadImage() {
+    const url = `${user.picture.large}`;
+    console.log(url);
+    axios(url, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        response.arrayBuffer().then(function (buffer) {
+          const url = window.URL.createObjectURL(new Blob([buffer]));
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", "image.png"); //or any other extension
+          document.body.appendChild(link);
+          link.click();
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  function timeSinceRegistration() {
+    const registration = new Date(`${user.registered.date}`);
+    const today = new Date();
+    const difference = today.getTime() - registration.getTime();
+    const differenceInDays = Math.floor(difference / (1000 * 3600 * 24));
+    const differenceInYears = Math.floor(difference / (1000 * 3600 * 24 * 365));
+    return `For ${differenceInYears} år og ${differenceInDays} dager siden.`;
+  }
+
   return (
     <Card sx={{ border: "none", mt: 5 }}>
       <CardActions sx={{ display: "flex", justifyContent: "flex-end" }}>
@@ -110,6 +147,12 @@ const UserFullDetails = ({ user }) => {
                     sx={{ fontSize: 10, fontWeight: "light" }}
                     color="text.secondary"
                   >
+                    {timeSinceRegistration()}
+                  </Typography>
+                  <Typography
+                    sx={{ mt: 1, fontSize: 10, fontWeight: "light" }}
+                    color="text.secondary"
+                  >
                     ID: {user.id.value}
                   </Typography>
                 </div>
@@ -129,10 +172,22 @@ const UserFullDetails = ({ user }) => {
                 size="small"
                 disableElevation
                 variant="contained"
-                sx={{ mt: 2 }}
+                sx={{ mt: 2, mr: 3 }}
                 endIcon={<SendIcon />}
               >
                 Send epost
+              </Button>
+
+              <Button
+                size="small"
+                disableElevation
+                variant="outlined"
+                color="button"
+                sx={{ mt: 2 }}
+                endIcon={<DownloadIcon />}
+                onClick={downloadImage}
+              >
+                Last ned bilde
               </Button>
             </Grid>
           </Grid>
