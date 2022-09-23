@@ -2,6 +2,7 @@ import React from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Avatar from "@mui/material/Avatar";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
@@ -28,39 +29,6 @@ const UserCard = ({ user, page, favourites, updateFavourites }) => {
   const userIsFav = favourites.some((fav) => fav.id.value === user.id.value);
 
   return (
-    // <Card sx={{ border: "none" }}>
-    //   <CardActions sx={{ display: "flex", justifyContent: "space-Between" }}>
-    //     <Button onClick={() => toggleFavourtie()} size="small">
-    //       {userIsFav ? <StarIcon /> : <StarBorderIcon />}
-    //     </Button>
-    //     <Button onClick={() => handleClick()} size="small">
-    //       Vis mer
-    //     </Button>
-    //   </CardActions>
-    //   <CardContent sx={{ textAlign: "center" }}>
-    //     <Avatar
-    //       alt="User image"
-    //       src={user.picture.large}
-    //       sx={{ width: 100, height: 100, mx: "auto", mb: 3 }}
-    //     />
-    //     <Typography sx={{ fontSize: 16, my: 0 }} gutterBottom>
-    //       {user.name.first} {user.name.last}
-    //     </Typography>
-    //     <Typography sx={{ fontSize: 16, mb: 2 }} gutterBottom>
-    //       ({user.dob.age})
-    //     </Typography>
-    //     <Typography
-    //       sx={{ fontSize: 12, fontWeight: "light" }}
-    //       color="text.secondary"
-    //     >
-    //       {user.location.city}, {user.location.country}
-    //     </Typography>
-
-    //     <Typography sx={{ fontSize: 12, fontWeight: "light" }}>
-    //       {user.email}
-    //     </Typography>
-    //   </CardContent>
-    // </Card>
     <Card sx={{ border: "none", maxHeight: "135px" }}>
       <CardContent sx={{ textAlign: "center" }}>
         <Box sx={{ display: "flex" }}>
@@ -87,13 +55,15 @@ const UserCard = ({ user, page, favourites, updateFavourites }) => {
                   ({user.dob.age})
                 </Typography>
               </Box>
-              <Button
+              <IconButton
+                aria-label="Toggle favourite"
                 onClick={() => toggleFavourtie()}
                 size="small"
                 sx={{ mt: -1 }}
+                color="primary"
               >
                 {userIsFav ? <StarIcon /> : <StarBorderIcon />}
-              </Button>
+              </IconButton>
             </Box>
 
             <Box sx={{ textAlign: "left" }}>
@@ -108,7 +78,7 @@ const UserCard = ({ user, page, favourites, updateFavourites }) => {
               </Typography>
             </Box>
             <Box sx={{ textAlign: "right" }}>
-              <Button onClick={() => handleClick()} size="small">
+              <Button color="button" onClick={() => handleClick()} size="small">
                 Vis mer
               </Button>
             </Box>

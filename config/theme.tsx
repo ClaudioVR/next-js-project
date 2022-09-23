@@ -7,7 +7,13 @@ const theme = createTheme({
       default: "#eeeff2",
     },
     primary: {
-      main: "#556cd6",
+      main: "#ffdd57",
+    },
+    neutral: {
+      main: "#64748B",
+    },
+    button: {
+      main: "#2196f3",
     },
     secondary: {
       main: "#eeeff2",

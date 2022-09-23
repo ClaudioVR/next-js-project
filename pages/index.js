@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Button from "@mui/material/Button";
-import { experimentalStyled as styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import UserCard from "../components/UserCard";
 import FavouriteCard from "../components/FavouriteCard";
+import ArrowRightIcon from "@mui/icons-material/ArrowRight";
+import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 
 export default function Home() {
   const [data, setData] = useState(null);
@@ -85,7 +85,7 @@ export default function Home() {
     <Box sx={{ mt: 3 }}>
       <Grid container spacing={{ xs: 2 }}>
         <Grid item xs={12} sm={8} md={9}>
-          <h2>My users</h2>
+          <h2>Mine brukere</h2>
           <Grid container spacing={{ xs: 2 }}>
             {data.results.map((user, i) => (
               <Grid item xs={12} md={6} key={i}>
@@ -113,24 +113,26 @@ export default function Home() {
           >
             {/* <p>Page {page} </p> */}
             <Button
-              sx={{ mr: 2, width: "100px" }}
+              sx={{ mr: 2, width: "120px" }}
               variant="outlined"
               onClick={() => handlePreviousClick()}
               disabled={page === 1}
             >
+              <ArrowLeftIcon />
               Previous
             </Button>
             <Button
-              sx={{ width: "100px" }}
+              sx={{ width: "120px" }}
               variant="outlined"
               onClick={() => handleNextClick()}
             >
               Next
+              <ArrowRightIcon />
             </Button>
           </Box>
         </Grid>
         <Grid item xs={12} sm={4} md={3}>
-          <h2>Favourites</h2>
+          <h2>Favoriter</h2>
 
           {favourites.map((user, i) => (
             <FavouriteCard

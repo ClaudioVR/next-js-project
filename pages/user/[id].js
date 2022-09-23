@@ -44,6 +44,7 @@ export default function User() {
         sx={{ mt: 3 }}
         variant="outlined"
         startIcon={<ArrowBackIcon />}
+        color="button"
       >
         Tilbake
       </Button>
