@@ -110,12 +110,11 @@ export default function Home() {
   }
 
   function sortByFavourite() {
-    const savedFavs = localStorage.getItem("favourites");
     const shallowCopy = [...data.results];
     const sortedUsers = shallowCopy.sort(
       (a, b) =>
-        Number(savedFavs.some((fav) => fav.id.value === a.id.value)) -
-        Number(savedFavs.some((fav) => fav.id.value === b.id.value))
+        Number(favourites.some((fav) => fav.id.value === b.id.value)) -
+        Number(favourites.some((fav) => fav.id.value === a.id.value))
     );
     setData({
       results: sortedUsers,
