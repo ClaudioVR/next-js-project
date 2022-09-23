@@ -7,6 +7,9 @@ import UserCard from "../components/UserCard";
 import FavouriteCard from "../components/FavouriteCard";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
+import SortBySelect from "../components/SortBySelect";
+import LinearProgress from "@mui/material/LinearProgress";
+import PreviousNextButtons from "../components/PreviousNextButtons";
 
 export default function Home() {
   const [data, setData] = useState(null);
@@ -78,14 +81,53 @@ export default function Home() {
     }
   }
 
-  if (isLoading) return <p>Loading...</p>;
+  function sortByName() {
+    const shallowCopy = [...data.results];
+    const usersByName = shallowCopy.sort((a, b) =>
+      a.name.first.toLowerCase() < b.name.first.toLowerCase() ? -1 : 1
+    );
+    setData({
+      results: usersByName,
+    });
+  }
+
+  function sortByAge() {
+    const shallowCopy = [...data.results];
+    const usersByAge = shallowCopy.sort((a, b) =>
+      a.dob.age < b.dob.age ? -1 : 1
+    );
+    setData({
+      results: usersByAge,
+    });
+  }
+
+  if (isLoading)
+    // whilst fetching data
+    return (
+      <Box sx={{ mt: 5, width: "100%" }}>
+        <LinearProgress />
+      </Box>
+    );
   if (!data) return <p>No profile data</p>;
 
   return (
     <Box sx={{ mt: 3 }}>
       <Grid container spacing={{ xs: 2 }}>
         <Grid item xs={12} sm={8} md={9}>
-          <h2>Mine brukere</h2>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <h2>Mine brukere</h2>
+            <SortBySelect
+              sortByName={sortByName}
+              sortByAge={sortByAge}
+              sortByFavourite={sortByFavourite}
+            />
+          </Box>
           <Grid container spacing={{ xs: 2 }}>
             {data.results.map((user, i) => (
               <Grid item xs={12} md={6} key={i}>
@@ -99,41 +141,14 @@ export default function Home() {
               </Grid>
             ))}
           </Grid>
-          <Box
-            sx={{
-              mt: 3,
-              width: "100%",
-              height: "60px",
-              padding: "10px",
-              background: "white",
-              borderRadius: "5px",
-              display: "flex",
-              justifyContent: "center",
-            }}
-          >
-            {/* <p>Page {page} </p> */}
-            <Button
-              sx={{ mr: 2, width: "120px" }}
-              variant="outlined"
-              onClick={() => handlePreviousClick()}
-              disabled={page === 1}
-            >
-              <ArrowLeftIcon />
-              Previous
-            </Button>
-            <Button
-              sx={{ width: "120px" }}
-              variant="outlined"
-              onClick={() => handleNextClick()}
-            >
-              Next
-              <ArrowRightIcon />
-            </Button>
-          </Box>
+          <PreviousNextButtons
+            page={page}
+            handlePreviousClick={handlePreviousClick}
+            handleNextClick={handleNextClick}
+          />
         </Grid>
         <Grid item xs={12} sm={4} md={3}>
           <h2>Favoriter</h2>
-
           {favourites.map((user, i) => (
             <FavouriteCard
               key={i}
