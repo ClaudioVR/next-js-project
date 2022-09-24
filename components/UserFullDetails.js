@@ -99,8 +99,9 @@ const UserFullDetails = ({ user }) => {
     const today = new Date();
     const difference = today.getTime() - registration.getTime();
     const differenceInDays = Math.floor(difference / (1000 * 3600 * 24));
+    const remainingMonths = differenceInDays % 12;
     const differenceInYears = Math.floor(difference / (1000 * 3600 * 24 * 365));
-    return `For ${differenceInYears} år og ${differenceInDays} dager siden.`;
+    return `For ${differenceInYears} år og ${remainingMonths} måneder siden. `;
   }
 
   function handleSendEmail(e) {
