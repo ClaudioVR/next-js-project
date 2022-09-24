@@ -49,20 +49,21 @@ const UserFullDetails = ({ user }) => {
         (fav) => fav.id.value === user.id.value
       );
       if (favsIncludeUser) {
-        console.log(favsIncludeUser);
         // remove user from favs
         const newFavs = favourites.filter(
           (fav) => fav.id.value !== user.id.value
         );
+        localStorage.clear();
         setFavourites(newFavs);
       } else {
         // add user
-        setFavourites((current) => [user, ...current]);
+        const newFavUser = { ...user, page: page };
+        setFavourites((current) => [newFavUser, ...current]);
       }
     } else {
       // if no favourites exist => add user
-      setFavourites((current) => [user, ...current]);
-      console.log(favourites);
+      const newFavUser = { ...user, page: page };
+      setFavourites((current) => [newFavUser, ...current]);
     }
   }
 

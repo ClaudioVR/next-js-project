@@ -76,11 +76,13 @@ export default function Home() {
         setFavourites(newFavs);
       } else {
         // add user
-        setFavourites((current) => [user, ...current]);
+        const newFavUser = { ...user, page: page };
+        setFavourites((current) => [newFavUser, ...current]);
       }
     } else {
       // if no favourites exist => add user
-      setFavourites((current) => [user, ...current]);
+      const newFavUser = { ...user, page: page };
+      setFavourites((current) => [newFavUser, ...current]);
     }
   }
 
