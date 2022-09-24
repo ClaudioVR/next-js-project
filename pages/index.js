@@ -1,16 +1,12 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import UserCard from "../components/UserCard";
 import FavouriteCard from "../components/FavouriteCard";
-import ArrowRightIcon from "@mui/icons-material/ArrowRight";
-import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import SortBySelect from "../components/SortBySelect";
 import LinearProgress from "@mui/material/LinearProgress";
 import PreviousNextButtons from "../components/PreviousNextButtons";
-import { SettingsInputAntennaTwoTone } from "@mui/icons-material";
 
 export default function Home() {
   const [data, setData] = useState(null);

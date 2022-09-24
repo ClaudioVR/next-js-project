@@ -9,7 +9,7 @@ import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import AdbIcon from "@mui/icons-material/Adb";
 
-const pages = ["Hjem", "Favoriter", "Om oss"];
+const navLinks = ["Hjem", "Favoriter", "Om oss"];
 
 const TheAppbar = () => {
   return (
@@ -66,7 +66,7 @@ const TheAppbar = () => {
             LOGO
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
+            {navLinks.map((page) => (
               <Button
                 key={page}
                 sx={{ my: 2, color: "white", display: "block" }}

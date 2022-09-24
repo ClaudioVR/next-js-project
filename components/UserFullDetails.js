@@ -14,6 +14,8 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import SendIcon from "@mui/icons-material/Send";
 import DownloadIcon from "@mui/icons-material/Download";
+import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
+import CakeIcon from "@mui/icons-material/Cake";
 
 const UserFullDetails = ({ user }) => {
   const [favourites, setFavourites] = useState([]);
@@ -101,8 +103,14 @@ const UserFullDetails = ({ user }) => {
     return `For ${differenceInYears} år og ${differenceInDays} dager siden.`;
   }
 
+  function handleSendEmail(e) {
+    // Unverified as I do not have native email installed on desktop
+    e.preventDefault();
+    window.location.href = `mailto:${user.email}`;
+  }
+
   return (
-    <Card sx={{ border: "none", mt: 5 }}>
+    <Card sx={{ border: "none", mt: 5, pb: 5 }}>
       <CardActions sx={{ display: "flex", justifyContent: "flex-end" }}>
         <Button onClick={updateFavourites} size="small">
           {userIsFav ? <StarIcon /> : <StarBorderIcon />}
@@ -113,7 +121,7 @@ const UserFullDetails = ({ user }) => {
           <Grid container spacing={2}>
             <Grid item xs={12} md={4}>
               <Avatar
-                alt="Remy Sharp"
+                alt="User image"
                 src={user.picture.large}
                 sx={{ width: 200, height: 200, mx: "auto", mb: 3 }}
               />
@@ -126,18 +134,17 @@ const UserFullDetails = ({ user }) => {
                   justifyContent: "space-between",
                 }}
               >
-                <div>
+                <Box>
                   <Typography sx={{ fontSize: 24, mb: 0 }}>
-                    {user.name.first} {user.name.last}
+                    {user.name.first} {user.name.last} ({user.dob.age})
                   </Typography>
-                  <Typography sx={{ fontSize: 16, mt: 0, mb: 0 }}>
+                  <Typography
+                    sx={{ fontSize: 16, mt: -1, mb: 1, color: "#aaa" }}
+                  >
                     {user.login.username}
                   </Typography>
-                  <Typography sx={{ fontSize: 12, mt: 1, fontWeight: "light" }}>
-                    Født: {userDOB()} ({user.dob.age})
-                  </Typography>
-                </div>
-                <div>
+                </Box>
+                <Box>
                   <Typography
                     sx={{ fontSize: 10, fontWeight: "light" }}
                     color="text.secondary"
@@ -154,12 +161,12 @@ const UserFullDetails = ({ user }) => {
                     sx={{ mt: 1, fontSize: 10, fontWeight: "light" }}
                     color="text.secondary"
                   >
-                    ID: {user.id.value}
+                    BrukerID: {user.id.value}
                   </Typography>
-                </div>
+                </Box>
               </Box>
 
-              <Typography sx={{ fontSize: 12, mt: 2, fontWeight: "light" }}>
+              <Typography sx={{ fontSize: 12, mt: 0, fontWeight: "light" }}>
                 {user.location.street.number} {user.location.street.name}
               </Typography>
               <Typography sx={{ fontSize: 12, mt: 0, fontWeight: "light" }}>
@@ -169,19 +176,36 @@ const UserFullDetails = ({ user }) => {
                 {user.location.postcode} {user.location.country}
               </Typography>
 
+              <Typography sx={{ fontSize: "18px", mt: 2, fontWeight: "light" }}>
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                  <CakeIcon sx={{ fontSize: "24px", mr: 1, mt: "-3px" }} />
+                  {userDOB()}
+                </Box>
+              </Typography>
+
+              <Typography sx={{ fontSize: 16, mt: 1, mb: 0 }}>
+                <Box sx={{ display: "flex" }}>
+                  <AlternateEmailIcon sx={{ mr: 1 }} />
+                  {user.email}
+                </Box>
+              </Typography>
+
               <Button
                 size="small"
                 disableElevation
                 variant="contained"
                 sx={{ mt: 2, mr: 3 }}
                 endIcon={<SendIcon />}
+                onClick={handleSendEmail}
               >
                 Send epost
               </Button>
 
+              {/* Encountering CORS error on image download */}
               <Button
                 size="small"
                 disableElevation
+                disabled
                 variant="outlined"
                 color="button"
                 sx={{ mt: 2 }}
