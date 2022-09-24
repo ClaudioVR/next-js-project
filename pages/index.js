@@ -7,6 +7,7 @@ import FavouriteCard from "../components/FavouriteCard";
 import SortBySelect from "../components/SortBySelect";
 import LinearProgress from "@mui/material/LinearProgress";
 import PreviousNextButtons from "../components/PreviousNextButtons";
+import GhostFavouriteCard from "../components/GhostFavouriteCard";
 
 export default function Home() {
   const [data, setData] = useState(null);
@@ -139,7 +140,7 @@ export default function Home() {
               justifyContent: "space-between",
             }}
           >
-            <h2>Mine brukere</h2>
+            <h2>Brukere</h2>
             <SortBySelect
               resetSortBy={resetSortBy}
               sortByName={sortByName}
@@ -167,7 +168,7 @@ export default function Home() {
           />
         </Grid>
         <Grid item xs={12} sm={4} md={3}>
-          <h2>Favoriter</h2>
+          <h2>Mine Favoriter</h2>
           {favourites.map((user, i) => (
             <FavouriteCard
               key={i}
@@ -177,6 +178,7 @@ export default function Home() {
               page={page}
             />
           ))}
+          {!favourites.length ? <GhostFavouriteCard /> : null}
         </Grid>
       </Grid>
     </Box>
