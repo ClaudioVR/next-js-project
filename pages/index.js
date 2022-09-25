@@ -8,6 +8,9 @@ import SortBySelect from "../components/SortBySelect";
 import LinearProgress from "@mui/material/LinearProgress";
 import GhostFavouriteCard from "../components/GhostFavouriteCard";
 import Pagination from "../components/Pagination";
+import IconButton from "@mui/material/IconButton";
+import StarIcon from "@mui/icons-material/Star";
+
 // import PreviousNextButtons from "../components/PreviousNextButtons";
 
 export default function Home() {
@@ -151,7 +154,7 @@ export default function Home() {
   return (
     <Box sx={{ mt: 3 }}>
       <Grid container spacing={{ xs: 2 }}>
-        <Grid item xs={12} sm={8} md={9}>
+        <Grid item xs={12} md={9}>
           <Box
             sx={{
               display: "flex",
@@ -166,12 +169,26 @@ export default function Home() {
                 handlePaginationClick={handlePaginationClick}
               />
             </Box>
-            <SortBySelect
-              resetSortBy={resetSortBy}
-              sortByName={sortByName}
-              sortByAge={sortByAge}
-              sortByFavourite={sortByFavourite}
-            />
+
+            <Box sx={{ display: "flex" }}>
+              <Box sx={{ display: { xs: "flex", md: "none" } }}>
+                <IconButton
+                  color="primary"
+                  href="#favourites"
+                  variant="outlined"
+                  size="large"
+                >
+                  <StarIcon />
+                </IconButton>
+              </Box>
+
+              <SortBySelect
+                resetSortBy={resetSortBy}
+                sortByName={sortByName}
+                sortByAge={sortByAge}
+                sortByFavourite={sortByFavourite}
+              />
+            </Box>
           </Box>
           <Box
             sx={{
@@ -225,7 +242,7 @@ export default function Home() {
             />
           </Box>
         </Grid>
-        <Grid item xs={12} sm={4} md={3}>
+        <Grid id="favourites" item xs={12} md={3}>
           <h2>Mine Favoriter</h2>
           {favourites.map((user, i) => (
             <FavouriteCard
