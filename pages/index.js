@@ -6,8 +6,10 @@ import UserCard from "../components/UserCard";
 import FavouriteCard from "../components/FavouriteCard";
 import SortBySelect from "../components/SortBySelect";
 import LinearProgress from "@mui/material/LinearProgress";
-import PreviousNextButtons from "../components/PreviousNextButtons";
 import GhostFavouriteCard from "../components/GhostFavouriteCard";
+import Pagination from "../components/Pagination";
+import { NoEncryption } from "@mui/icons-material";
+// import PreviousNextButtons from "../components/PreviousNextButtons";
 
 export default function Home() {
   const [data, setData] = useState(null);
@@ -50,12 +52,19 @@ export default function Home() {
     }
   }, [favourites]);
 
-  function handleNextClick() {
-    setPage(page + 1);
-  }
+  // Used for the Previous and Next buttons
+  // NB: unused - Pagination being used instead
 
-  function handlePreviousClick() {
-    setPage(page - 1);
+  // function handleNextClick() {
+  //   setPage(page + 1);
+  // }
+
+  // function handlePreviousClick() {
+  //   setPage(page - 1);
+  // }
+
+  function handlePaginationClick(value) {
+    setPage(value);
   }
 
   function updateFavourites(user) {
@@ -141,6 +150,12 @@ export default function Home() {
             }}
           >
             <h2>Brukere</h2>
+            <Box sx={{ display: { xs: "none", md: "flex" } }}>
+              <Pagination
+                page={page}
+                handlePaginationClick={handlePaginationClick}
+              />
+            </Box>
             <SortBySelect
               resetSortBy={resetSortBy}
               sortByName={sortByName}
@@ -148,6 +163,21 @@ export default function Home() {
               sortByFavourite={sortByFavourite}
             />
           </Box>
+          <Box
+            sx={{
+              display: {
+                xs: "flex",
+                md: "none",
+              },
+              mb: 2,
+            }}
+          >
+            <Pagination
+              page={page}
+              handlePaginationClick={handlePaginationClick}
+            />
+          </Box>
+
           <Grid container spacing={{ xs: 2 }}>
             {data.results.map((user, i) => (
               <Grid item xs={12} md={6} key={i}>
@@ -161,11 +191,29 @@ export default function Home() {
               </Grid>
             ))}
           </Grid>
-          <PreviousNextButtons
+          {/* <PreviousNextButtons
             page={page}
             handlePreviousClick={handlePreviousClick}
             handleNextClick={handleNextClick}
-          />
+          /> */}
+          <Box
+            sx={{
+              mt: 3,
+              width: "100%",
+              height: "60px",
+              padding: "10px",
+              background: "white",
+              borderRadius: "5px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Pagination
+              handlePaginationClick={handlePaginationClick}
+              page={page}
+            />
+          </Box>
         </Grid>
         <Grid item xs={12} sm={4} md={3}>
           <h2>Mine Favoriter</h2>
