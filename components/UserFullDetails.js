@@ -71,7 +71,6 @@ const UserFullDetails = ({ user }) => {
 
   function downloadImage() {
     const url = `${user.picture.large}`;
-    console.log(url);
     axios(url, {
       method: "GET",
       headers: {

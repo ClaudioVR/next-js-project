@@ -8,36 +8,30 @@ import SortBySelect from "../components/SortBySelect";
 import LinearProgress from "@mui/material/LinearProgress";
 import GhostFavouriteCard from "../components/GhostFavouriteCard";
 import Pagination from "../components/Pagination";
-import { NoEncryption } from "@mui/icons-material";
 // import PreviousNextButtons from "../components/PreviousNextButtons";
 
 export default function Home() {
   const [data, setData] = useState(null);
   const [isLoading, setLoading] = useState(false);
   // page sets the apiURL paggination
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(null);
   const [favourites, setFavourites] = useState([]);
   // setValue for refreshing purposes
   const [value, setValue] = useState();
 
   useEffect(() => {
-    const fetchData = () => {
-      setLoading(true);
-      axios(
-        `https://randomuser.me/api?seed=8a13afcabe1a8004&page=${page}&results=10`,
-        {
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-        }
-      ).then((res) => {
-        setData(res.data);
-        setLoading(false);
-      });
-    };
+    // On initial render
+    const savedPage = JSON.parse(localStorage.getItem("savedPage"));
+    if (savedPage) setPage(savedPage);
+    else setPage(1);
+  }, []);
 
-    fetchData();
+  useEffect(() => {
+    // on page change
+    if (page) {
+      localStorage.setItem("savedPage", page);
+      fetchData();
+    }
   }, [page, value]);
 
   useEffect(() => {
@@ -51,6 +45,22 @@ export default function Home() {
       }
     }
   }, [favourites]);
+
+  const fetchData = () => {
+    setLoading(true);
+    axios(
+      `https://randomuser.me/api?seed=8a13afcabe1a8004&page=${page}&results=10`,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      }
+    ).then((res) => {
+      setData(res.data);
+      setLoading(false);
+    });
+  };
 
   // Used for the Previous and Next buttons
   // NB: unused - Pagination being used instead
